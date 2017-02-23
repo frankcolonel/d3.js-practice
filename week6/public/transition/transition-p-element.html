@@ -1,0 +1,34 @@
+<html>
+
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+
+d3.select("body").selectAll("p")
+.data([5,4,3,2,1])
+.enter()
+.append("p")
+.text(function(d,i) { return " Hello - " + d; });
+
+d3.selectAll("p").transition().style("color","blue");
+
+d3.selectAll("p").transition().style("font-size","12px");
+
+
+/*d3.selectAll("p").transition().style("font-size","17px").delay(function(d,i){
+    if (i % 2 === 0) {
+        return 2000;
+    } else {
+        return 4000;
+    }
+});*/
+d3.selectAll("p").transition().style("color","red").duration(2000);
+d3.selectAll("p").transition().style("font-size","70px").delay(function(d,i){
+    return d * 1000;
+});
+
+</script>
+
+
+
+</html>

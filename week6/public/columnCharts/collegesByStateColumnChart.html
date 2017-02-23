@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Example chart</title>
+    <style>
+        .axis text{
+          font-family: Helvetica, Arial, sans-serif;
+          font-size: 9px;
+          text-anchor: end;
+        }
+        .axis path{
+          fill:none;
+          stroke:black;
+          stroke-width: 1.5px;
+        }
+        .bar{
+            stroke: none;
+            fill: steelblue;
+        }
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<script>
+
+    var margin = {top:30, right:0, bottom:70, left:60},
+        width  = 900 - margin.left - margin.right,
+        height = 700 - margin.top  - margin.bottom;
+
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+    var chart = svg.append("g")
+        .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+        //when rendered, this will look like <g transform="translate(60, 30)">
+
+    var x = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1); // the range (chart area) we want to place each bar
+
+    var y = d3.scale.linear()
+        .range([height, 0]); //the space available in our chart
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+    d3.csv("collegesByState.csv", convertToNumber, function(error, data){
+
+        //optionally sort data
+        data.sort(function(a,b){ return b.numOfColleges - a.numOfColleges; });
+
+        var states = data.map(function(d){ return d.state; });
+        var numColleges =  data.map(function(d){return d.numOfColleges;});
+        //newly created states variable is now an array with values [VA,CA,NJ,NY,MD...]
+        //newly created numColleges is now an array with values [632, 544, 506, 439....]
+
+        //set the domains for x and y functions here
+        x.domain(states);
+        y.domain([0, d3.max(numColleges) ]);
+
+        chart.selectAll(".bar")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("x", function(d){ return x(d.state); })
+            .attr("y", function(d){ return y(d.numOfColleges); })
+            .attr("width", function(d){ return x.rangeBand(); }) // range band is width of bars
+            .attr("height", function(d){ return height - y(d.numOfColleges); })
+            .attr("class", "bar");
+
+        //setting the axes
+        svg.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .call(yAxis);
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+            .call(xAxis)
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-65)")
+            .style("text-anchor", "end");
+
+    });
+
+    function convertToNumber(d){
+        d.numOfColleges = +d.numOfColleges; //takes d.numOfColleges string, converts to number
+        return d;
+    }
+
+</script>
+</body>
+</html>

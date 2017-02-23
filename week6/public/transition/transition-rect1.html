@@ -1,0 +1,29 @@
+<html>
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+d3.select("body").append("svg").append("rect");
+d3.select("rect")
+    .attr("x","25")
+    .attr("y","25")
+    .attr("width","50")
+    .attr("height","100");  
+
+d3.select("rect")
+    .transition()
+        .attr("height", function(d, i) { return i + 150; })
+        .duration(3000)
+    .transition()
+        .attr("width", "300")
+        .attr("fill", "green")
+        .duration(3000)
+    .transition()
+        .attr("height", "40")
+        .duration(3000)
+    .transition()
+        .attr("width", "40")
+        .duration(3000);
+
+</script>
+</body>
+</html>

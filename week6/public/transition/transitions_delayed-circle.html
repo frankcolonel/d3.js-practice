@@ -1,0 +1,54 @@
+<html> 
+  <head> 
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  
+    <style type="text/css">
+
+    circle.frame {
+      stroke: black;
+      stroke-width: 1;
+      stroke-opacity: 1.0;
+      fill: rgb(0,0,255);
+      fill-opacity: 0.196;
+    }
+
+    </style>
+
+  </head> 
+  <body>
+
+    <script type="text/javascript"> 
+      
+      var svg = d3.select("body").append("svg")
+        .attr("width", 800)
+        .attr("height", 400);
+      
+      var blue =  d3.rgb(0,0,255);
+      var red = d3.rgb(255,0,0);
+      var duration = 2500;
+      // elements per row
+      var epr = 15;
+
+      var data = [];
+      for (var i=0; i<100; i++) {
+        data.push(i);
+      }
+
+      var circles = svg.selectAll("circle")
+        .data(data).enter()
+        .append("circle")
+        .attr("class", "frame")
+        .attr("cx", function(d,i) { return (i%epr + 1)*50; })
+        .attr("cy", function(d,i) { return Math.floor(i/epr + 1)*50; })
+        .attr("r", 25);
+      console.log('circles: ', circles);  
+      circles
+        .style("fill", blue)
+        .transition()
+        .delay(function(d,i) { return i*100; })
+        .duration(duration)
+        .style("fill", red);
+
+    </script>
+  </body> 
+</html>
