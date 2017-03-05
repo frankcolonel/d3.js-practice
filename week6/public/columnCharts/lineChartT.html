@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body { font: 12px Arial;}
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+//margin
+
+
+var parseDate = d3.time.format("%d-%b-%y").parse;
+
+//scale x axis
+
+//scale y1 axiss
+
+//scale y2
+
+//axis x
+//axis y
+
+//axis y2
+
+//line d3.svg.line().x(fd).y(fd)
+
+//line d3.svg.line().x(fd).y(fd)
+
+
+//csv
+d3.csv("stockLineChart.csv", function(error, data) {
+    console.log('data: ', data);
+    //data for each
+  //domain mapping x.domain(d3.extent)
+
+ //domain y1 0, d3.max
+ //domain y2 0, d3.max
+
+// call the xAxis
+
+//call the y1 axis
+
+//call the y2 axis
+
+//make the line chart with data and append to svg for open price
+//make the line chart with data and append to svg for close price
+
+
+
+});
+</script>
+
+</html>

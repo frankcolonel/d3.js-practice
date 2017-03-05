@@ -26,7 +26,9 @@
 
     var margin = {top:30, right:0, bottom:70, left:60},
         width  = 900 - margin.left - margin.right,
-        height = 700 - margin.top  - margin.bottom;
+        height = 550 - margin.top  - margin.bottom;
+
+
 
     var svg = d3.select("body")
         .append("svg")
@@ -38,10 +40,14 @@
         //when rendered, this will look like <g transform="translate(60, 30)">
 
     var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1); // the range (chart area) we want to place each bar
+        .rangeRoundBands([0, width], .1);
+
+        //.range([, ]);()
+        //.rangeRoundBands([0, width], .1); // the range (chart area) we want to place each bar
 
     var y = d3.scale.linear()
-        .range([height, 0]); //the space available in our chart
+        .range([height, 0]);
+         //the space available in our chart
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -51,28 +57,27 @@
         .scale(y)
         .orient("left");
 
-    d3.csv("collegesByState.csv", convertToNumber, function(error, data){
-
+    d3.csv("stockColumnChart.csv", function(error, data){
         //optionally sort data
-        data.sort(function(a,b){ return b.numOfColleges - a.numOfColleges; });
+        //data.sort(function(a,b){ return b.numOfColleges - a.numOfColleges; });
 
-        var states = data.map(function(d){ return d.state; });
-        var numColleges =  data.map(function(d){return d.numOfColleges;});
+        var dates = data.map(function(d){ return d.date; });
+        var values =  data.map(function(d){return d.value;});
         //newly created states variable is now an array with values [VA,CA,NJ,NY,MD...]
         //newly created numColleges is now an array with values [632, 544, 506, 439....]
-
+        console.log(values);
         //set the domains for x and y functions here
-        x.domain(states);
-        y.domain([0, d3.max(numColleges) ]);
+        x.domain(dates);
+        y.domain([ 0, values[13]]);
 
         chart.selectAll(".bar")
             .data(data)
             .enter()
             .append("rect")
-            .attr("x", function(d){ return x(d.state); })
-            .attr("y", function(d){ return y(d.numOfColleges); })
+            .attr("x", function(d){ return x(d.date); })
+            .attr("y", function(d){ return   y(d.value); })
             .attr("width", function(d){ return x.rangeBand(); }) // range band is width of bars
-            .attr("height", function(d){ return height - y(d.numOfColleges); })
+            .attr("height", function(d){ return   height - y(d.value); })
             .attr("class", "bar");
 
         //setting the axes
@@ -91,10 +96,6 @@
 
     });
 
-    function convertToNumber(d){
-        d.numOfColleges = +d.numOfColleges; //takes d.numOfColleges string, converts to number
-        return d;
-    }
 
 </script>
 </body>
